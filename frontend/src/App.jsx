@@ -9,19 +9,13 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-  const {mode,setmode} = useState("toDoList")
-  const {ids,setIds} = useState([])
+  const [mode,setmode] = useState("toDoList")
 
-  let content
-
-
+  console.log(mode);
+  let content 
   return (
     <div>
-      {mode === "toDoList" ? (
-        <ToDoList mode={mode} setmode={setmode} />
-      ) : (
-        <CreateTodo setmode={setmode} />
-      )}
+
     </div>
 
 

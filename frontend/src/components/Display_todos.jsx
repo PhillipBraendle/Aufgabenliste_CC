@@ -10,27 +10,23 @@ export function ToDoList({mode,setmode}) {
     }
 
     return (
-        <body>
-            <div class="toDoList">
-                <h1>To-Do List</h1>
-                <p id="toDo">To Do</p>
-                <p id="inProgress">In Progress</p>
-                <p id="done">Done</p>
-                <div className="card">
-                    <ul>
-                        {todos.map((todo) => (
-                            <li key={todo.id}>
-                                <h2 class = "heading">{todo.title}</h2>
-                                <p class = "description">{todo.description}</p>
-                                <button class = "delete" onClick={deleteTodo(todo.id)}>Löschen</button>
-                                <button class = "edit" onClick={setmode("edit")}>Bearbeiten</button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+        <div className="toDoList">
+            <h1>To-Do List</h1>
+            <p id="toDo">To Do</p>
+            <div className="card">
+                <ul>
+                    {todos.map((todo) => (
+                        <li key={todo.id}>
+                            <h2 className = "heading">{todo.title}</h2>
+                            <p className = "description">{todo.description}</p>
+                            <button className = "delete" onClick={deleteTodo(todo.id)}>Löschen</button>
+                            <button className = "edit" onClick={setmode("edit")}>Bearbeiten</button>
+                        </li>
+                    ))}
+                </ul>
             </div>
-        </body>
-
+            <button onClick={setmode("create")}>Hinzufügen</button>
+        </div>
     )
 }
 

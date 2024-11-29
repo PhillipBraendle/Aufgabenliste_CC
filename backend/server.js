@@ -5,7 +5,10 @@ const port = 2000;
 const server = require('http').createServer(app);
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 const expectedProperties = ['id', 'title', 'description'];
+
+app.use(cors());
 
 function getNewId(todosObject){
     const existingIds = todosObject.todos.map(todo => todo.id);
