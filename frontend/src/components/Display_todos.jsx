@@ -21,8 +21,8 @@ export function ToDoList({mode,setmode}) {
                     <ul>
                         {todos.map((todo) => (
                             <li key={todo.id}>
-                                <h2>{todo.title}</h2>
-                                <p>{todo.description}</p>
+                                <h2 class = "heading">{todo.title}</h2>
+                                <p class = "description">{todo.description}</p>
                                 <button class = "delete" onClick={deleteTodo(todo.id)}>Löschen</button>
                                 <button class = "edit" onClick={setmode("edit")}>Bearbeiten</button>
                             </li>
