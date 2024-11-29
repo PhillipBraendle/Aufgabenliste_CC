@@ -18,6 +18,62 @@ app.get('/todos', (req, res) => {
     });
 });
 
+function hasExactProperties(obj, properties) {
+    const objKeys = Object.keys(obj);
+
+    return (
+        properties.length === objKeys.length && // Number of properties must match
+        properties.every((property) => objKeys.includes(property)) // All required properties must exist
+    );
+}
+
+app.post('/todos/:id', express.json(), (req, res) => {
+    const todosFilePath = path.join(__dirname, 'todos.json');
+    const newTodo = req.body;
+    const todoIdUrl = req.params.id;
+    
+    // Check if ID in URL matches ID in request body
+    if (newTodo.id !== todoIdUrl) {
+        res.status(400).send('ID in URL does not match ID in todo item');
+        return;
+    }
+
+    // Check if todo item is structured correctly
+    const expectedProperties = ['id', 'title', 'description', 'state'];
+    if (!hasExactProperties(newTodo, expectedProperties)) {
+        res.status(400).send('Todo item structure is invalid');
+        return;
+    }
+
+    // write todo item to file
+    fs.readFile(todosFilePath, 'utf8', (err, data) => {
+        if (err) {
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        const todosObject = JSON.parse(data);
+
+        // assert item id doesn't already exist
+        for(todo in todosObject.todos) {
+            if (todo.id === newTodo.id) {
+                res.status(400).send('ID already exists, update todo list and try again');
+                return;
+            }
+        }
+        
+        // add new todo item to the todosfile
+        todosObject.todos.push(newTodo);
+        fs.writeFile(todosFilePath, JSON.stringify(todosObject, null, 2), 'utf8', (err) => {
+            if (err) {
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.status(201).send('Todo item added');
+        });
+    });
+});
+
 server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
