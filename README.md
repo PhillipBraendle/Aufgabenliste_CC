@@ -1,9 +1,12 @@
 # Cloud Computing Aufgabenliste
 
-## Overview
-This repository contains our second task for the Cloud Computing course. It includes various assignments and projects to help you understand and apply cloud computing concepts.
+### Overview
+This repository contains our second task for the Cloud Computing course.
 
-## Members of Our Group
+### Installation
+For detailed installation instructions reffer to frontend/README.md and backend/README.md
+
+### Members of Our Group
 
 Nino Maier - MatNr: 13440414
 Janina Wehe - MatNr: 11640614
