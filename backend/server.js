@@ -1,13 +1,12 @@
 const express = require('express');
-
-const app = express();
-const port = 2000;
-const server = require('http').createServer(app);
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-const expectedProperties = ['id', 'title', 'description'];
 
+const app = express();
+const port = 2000;
+
+app.use(express.json());
 app.use(cors());
 
 function getNewId(todosObject){
@@ -127,6 +126,6 @@ app.delete('/todos/:id', (req, res) => {
     });
 });
 
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
