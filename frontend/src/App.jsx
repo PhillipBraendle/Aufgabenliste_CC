@@ -1,31 +1,48 @@
 import { useState } from 'react'
+import axios from 'axios'
 
-import { ToDoList } from './components/Display_todos'
+import { ToDoList } from './components/TodoList'
 import { EditTodo } from './components/EditTodo'
 import { CreateTodo } from './components/CreateTodo'
+import { useEffect } from 'react'
 import './App.css'
 
+function getTodos(todos, setTodos) {
+  axios.get('http://localhost:2000/todos')
+      .then((response) => {
+          setTodos(response.data.todos)
+      })
+      .catch((error) => {
+          console.log(error)
+      })
+}
 
 function App() {
-  const [mode,setmode] = useState("toDoList")
-  const [selectedId, setSelectedId] = useState(null);
-  const [todos, setTodo] = useState([])
+  const [todos, setTodos] = useState([])
+  const [editingTodo, setEditingTodo] = useState(null)
 
-  console.log(mode);
-  let content
-  if (mode === "toDoList") {
-    content = <ToDoList setmode={setmode} setSelectedId = {setSelectedId} setTodo = {setTodo}/>
-  } else if (mode === "create") {
-    content = <CreateTodo setmode={setmode}/>
-  } else if (mode === "edit") {
-    content = <EditTodo id={selectedId} setmode={setmode} setTodo = {setTodo}/>
-  }
+  useEffect(() => {
+    getTodos(todos, setTodos);
+  }, []);
+
   return (
     <div>
-     {content} 
+    <CreateTodo
+    setTodos={setTodos}
+    todos={todos} />
+    {editingTodo && 
+      <EditTodo
+        editingTodo={editingTodo}
+        setEditingTodo={setEditingTodo}
+        todos={todos}
+        setTodos={setTodos}
+      />
+    }
+    <ToDoList 
+    setEditingTodo={setEditingTodo}
+    todos={todos}
+    setTodos={setTodos}/>
     </div>
-
-
   )
 }
 

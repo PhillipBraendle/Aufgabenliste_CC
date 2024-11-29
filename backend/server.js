@@ -53,7 +53,7 @@ app.post('/todos', express.json(), (req, res) => {
                 res.status(500).send('Internal Server Error');
                 return;
             }
-            res.status(201).json(newTodo);
+            res.status(200).json(newTodo);
         });
     });
 });

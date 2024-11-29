@@ -1,17 +1,21 @@
 import React from 'react';
-import { useState } from 'react';
 import axios from 'axios';
+
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 import './todo_input_field.css';
 
-export function EditTodo({id, setmode}, todos) {
-    let todo = todos.find(todo => todo.id === id);
 
+export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
+    const [title, setTitle] = useState(editingTodo.title);
+    const [description, setDescription] = useState(editingTodo.description);
 
-    let todoTitle = todo.title;
-    let todoDescription = todo.description;
-
-    const [title, setTitle] = useState(todo.title);
-    const [description, setDescription] = useState(todo.description);
+    let id = editingTodo.id;
+    useEffect(() => {
+        setTitle(editingTodo.title);
+        setDescription(editingTodo.description);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +26,7 @@ export function EditTodo({id, setmode}, todos) {
         }
         
         try {
-            const response = await axios.put('http://localhost:2000/todos/:${id}', 
+            const response = await axios.put('http://localhost:2000/todos/' + id, 
             {
                 title,
                 description,
@@ -33,8 +37,14 @@ export function EditTodo({id, setmode}, todos) {
                 },
             });
             
-            if (response.status === 201) {
-                alert('To-Do erfolgreich hinzugefügt!');
+            if (response.status === 200) {
+                alert('To-Do erfolgreich aktualisiert!');
+                setTitle('');
+                setDescription('');
+                let receivedTodo = response.data;
+                const todoIndex = todos.findIndex(todo => todo.id === receivedTodo.id);
+                todos[todoIndex] = receivedTodo;
+                setEditingTodo(null);
             } else {
                 alert('Fehler beim Hinzufügen des To-Do-Items.');
             }
@@ -42,16 +52,10 @@ export function EditTodo({id, setmode}, todos) {
             console.error(error);
             alert('Es ist ein Fehler aufgetreten.');
         }
-
-        setmode('toDoList');
-
     };
 
     const handleCancel = () => {
-        setTitle(todoTitle);
-        setDescription(todoDescription);       
-        alert('Eingaben zurückgesetzt.');
-        setmode('toDoList');
+        setEditingTodo(null);
     };
 
     return(
@@ -62,7 +66,7 @@ export function EditTodo({id, setmode}, todos) {
                     <input 
                         type="text" 
                         value={title} 
-                        onChange={(e) => setTitle(e.target.value)} 
+                        onChange={(e) => setTitle(e.target.value)}
                         required
                         className="input-field"
                     />

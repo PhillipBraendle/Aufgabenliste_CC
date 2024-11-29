@@ -3,14 +3,12 @@ import { useState } from 'react';
 import axios from 'axios'; 
 import './todo_input_field.css';
 
-export function CreateTodo({setmode}) {
+export function CreateTodo({ setTodos, todos }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // verhindert das Neuladen der Seite
-
-        
         if (title.trim() === '') {
             alert('Der Titel ist erforderlich.');
             return;
@@ -28,10 +26,12 @@ export function CreateTodo({setmode}) {
                 },
             });
             
-            if (response.status === 201) {
+            if (response.status === 200) {
                 alert('To-Do erfolgreich hinzugefügt!');
                 setTitle('');
                 setDescription('');
+                let receivedTodo = response.data;
+                setTodos([...todos, receivedTodo]);
             } else {
                 alert('Fehler beim Hinzufügen des To-Do-Items.');
             }
@@ -39,15 +39,6 @@ export function CreateTodo({setmode}) {
             console.error(error);
             alert('Es ist ein Fehler aufgetreten.');
         }
-
-        setmode('toDoList');
-    };
-
-    const handleCancel = () => {
-        setTitle('');
-        setDescription('');
-        alert('Eingaben zurückgesetzt.');
-        setmode('toDoList');
     };
         
     return(
@@ -72,12 +63,11 @@ export function CreateTodo({setmode}) {
                     value={description} 
                     onChange={(e) => setDescription(e.target.value)} // Eingabe wird in description gespeichert 
                     className="input-field"
-            />
+                />
             </label>
         </div>
             <div>
             <button type="submit" className="submit-btn" onClick={handleSubmit}>Speichern</button>
-            <button type="button" className="cancel-btn" onClick={handleCancel}>Abbrechen</button>
             </div>
         </div>
     )

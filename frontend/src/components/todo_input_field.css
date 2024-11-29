@@ -2,8 +2,6 @@
   display: flex;
   justify-content: center; /* Zentriert den Inhalt horizontal */
   align-items: center;     /* Zentriert den Inhalt vertikal */
-  height: 100vh;           /* Nimmt die gesamte Höhe des Viewports ein */
-  width: 100vw;            /* Nimmt die gesamte Breite des Viewports ein */
   flex-direction: column;  /* Die Formularelemente untereinander anordnen */
   box-sizing: border-box;
 
@@ -32,16 +30,16 @@
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    width: 48%;
   }
   
   .submit-btn {
     background-color: #4CAF50;
     color: white;
-    margin-right: 10px;
+    margin: 10px;
   }
   
   .cancel-btn {
     background-color: #f44336;
     color: white;
+    margin: 10px;
   }
