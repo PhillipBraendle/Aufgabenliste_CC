@@ -5,6 +5,7 @@ const port = 2000;
 const server = require('http').createServer(app);
 const fs = require('fs');
 const path = require('path');
+const expectedProperties = ['id', 'title', 'description'];
 
 app.get('/todos', (req, res) => {
     const todosPath = path.join(__dirname, 'todos.json');
@@ -18,25 +19,9 @@ app.get('/todos', (req, res) => {
     });
 });
 
-function hasExactProperties(obj, properties) {
-    const objKeys = Object.keys(obj);
-
-    return (
-        properties.length === objKeys.length && // Number of properties must match
-        properties.every((property) => objKeys.includes(property)) // All required properties must exist
-    );
-}
-
 app.post('/todos', express.json(), (req, res) => {
     const todosFilePath = path.join(__dirname, 'todos.json');
     const newTodo = req.body;
-    
-    // Check if todo item is structured correctly
-    const expectedProperties = ['id', 'title', 'description', 'state'];
-    if (!hasExactProperties(newTodo, expectedProperties)) {
-        res.status(400).send('Todo item structure is invalid');
-        return;
-    }
 
     // write todo item to file
     fs.readFile(todosFilePath, 'utf8', (err, data) => {
@@ -46,15 +31,15 @@ app.post('/todos', express.json(), (req, res) => {
         }
 
         const todosObject = JSON.parse(data);
-
-        // assert item id doesn't already exist
-        for(todo in todosObject.todos) {
-            if (todo.id === newTodo.id) {
-                res.status(400).send('ID already exists, update todo list and try again');
-                return;
-            }
-        }
         
+        // assign the id to the new todo item
+        const existingIds = todosObject.todos.map(todo => todo.id);
+        let newId = 1;
+        while (existingIds.includes(newId)) {
+            newId++;
+        }
+        newTodo.id = newId;
+
         // add new todo item to the todosfile
         todosObject.todos.push(newTodo);
         fs.writeFile(todosFilePath, JSON.stringify(todosObject, null, 2), 'utf8', (err) => {
@@ -70,20 +55,7 @@ app.post('/todos', express.json(), (req, res) => {
 app.put('/todos/:id', express.json(), (req, res) => {
     const todosFilePath = path.join(__dirname, 'todos.json');
     const updatedTodo = req.body;
-    const todoIdUrl = req.params.id;
-
-    // Check if ID in URL matches ID in request body
-    if (updatedTodo.id !== todoIdUrl) {
-        res.status(400).send('ID in URL does not match ID in todo item');
-        return;
-    }
-
-    // Check if todo item is structured correctly
-    const expectedProperties = ['id', 'title', 'description', 'state'];
-    if (!hasExactProperties(updatedTodo, expectedProperties)) {
-        res.status(400).send('Todo item structure is invalid');
-        return;
-    }
+    const todoId = req.params.id;
 
     fs.readFile(todosFilePath, 'utf8', (err, data) => {
         if (err) {
@@ -92,13 +64,16 @@ app.put('/todos/:id', express.json(), (req, res) => {
         }
 
         const todosObject = JSON.parse(data);
-        const todoIndex = todosObject.todos.findIndex(todo => todo.id === updatedTodo.id);
+        const todoIndex = todosObject.todos.findIndex(todo => todo.id == todoId);
+        console.log('todosObject:', todosObject);
+        console.log('todoId:', todoId);
 
         if (todoIndex === -1) {
             res.status(404).send('Todo item not found');
             return;
         }
 
+        // update the todo item
         todosObject.todos[todoIndex] = updatedTodo;
 
         fs.writeFile(todosFilePath, JSON.stringify(todosObject, null, 2), 'utf8', (err) => {
@@ -115,6 +90,7 @@ app.delete('/todos/:id', (req, res) => {
     const todosFilePath = path.join(__dirname, 'todos.json');
     const todoId = req.params.id;
 
+    // read the todos file
     fs.readFile(todosFilePath, 'utf8', (err, data) => {
         if (err) {
             res.status(500).send('Internal Server Error');
@@ -129,8 +105,10 @@ app.delete('/todos/:id', (req, res) => {
             return;
         }
 
+        // delete the todo item
         todosObject.todos.splice(todoIndex, 1);
-
+        
+        // write the updated todos to the file
         fs.writeFile(todosFilePath, JSON.stringify(todosObject, null, 2), 'utf8', (err) => {
             if (err) {
                 res.status(500).send('Internal Server Error');
