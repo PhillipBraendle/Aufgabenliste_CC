@@ -1,6 +1,4 @@
-# Project Frontend
-
-This project is part of the Cloud Computing course. It contains the frontend implementation for the Aufgabenliste_CC application.
+# Project Backend
 
 ### Installation
 1. Clone the repository:
@@ -9,19 +7,16 @@ This project is part of the Cloud Computing course. It contains the frontend imp
     ```
 2. Navigate to the project directory:
     ```bash
-    cd frontend
+    cd backend
     ```
 3. Install dependencies:
     ```bash
     npm install
     ```
 
-### Usage
-
+### Running the Application
 To start the development server, run:
-
 ```bash
-npm run dev
+npm run start
 ```
-
-Open your browser and navigate to `http://localhost:5173` to view the application.
+note: npm run dev doesn't work as updating the todos.json would restart the server
