@@ -40,7 +40,7 @@ export function CreateTodo({ setTodos, todos }) {
     };
         
     return(
-        <div className = "todoForm">  
+        <div className = "todoForm m-5 p-4">  
           <div className = "formGroup">
             <label>
                 Titel:

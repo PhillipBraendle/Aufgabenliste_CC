@@ -57,7 +57,7 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
     };
 
     return(
-        <div className = "todoForm">
+        <div className = "todoForm p-3">
             <div className = "formGroup">
                 <label>
                     Title:
@@ -72,6 +72,7 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
             </div>
             <div className = "formGroup">
                 <label>
+                    Description:
                 <textarea 
                     value={description} 
                     onChange={(e) => setDescription(e.target.value)} // Eingabe wird in description gespeichert 
@@ -80,8 +81,8 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
                 </label>
             </div>
             <div>
-                <button type="submit" onClick={handleSubmit}>Speichern</button>
-                <button type="button" onClick={handleCancel}>Abbrechen</button>
+                <button type="submit" className='btn  btn-sm btn-primary me-2' onClick={handleSubmit}>Speichern</button>
+                <button type="button" className='btn btn-sm btn-danger' onClick={handleCancel}>Abbrechen</button>
             </div>
         </div>
     )
