@@ -21,7 +21,6 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
         e.preventDefault();
 
         if (title.trim() === '') {
-            alert('Der Titel ist erforderlich.');
             return;
         }
         
@@ -38,7 +37,6 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
             });
             
             if (response.status === 200) {
-                alert('To-Do erfolgreich aktualisiert!');
                 setTitle('');
                 setDescription('');
                 let receivedTodo = response.data;
@@ -74,13 +72,11 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
             </div>
             <div className = "formGroup">
                 <label>
-                    Description:
-                    <input 
-                        type="text" 
-                        value={description} 
-                        onChange={(e) => setDescription(e.target.value)} 
-                        className="input-field"
-                    />
+                <textarea 
+                    value={description} 
+                    onChange={(e) => setDescription(e.target.value)} // Eingabe wird in description gespeichert 
+                    className="input-field"
+                />
                 </label>
             </div>
             <div>

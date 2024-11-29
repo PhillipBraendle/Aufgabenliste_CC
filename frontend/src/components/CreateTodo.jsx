@@ -10,7 +10,6 @@ export function CreateTodo({ setTodos, todos }) {
     const handleSubmit = async (e) => {
         e.preventDefault(); // verhindert das Neuladen der Seite
         if (title.trim() === '') {
-            alert('Der Titel ist erforderlich.');
             return;
         }
         
@@ -27,7 +26,6 @@ export function CreateTodo({ setTodos, todos }) {
             });
             
             if (response.status === 200) {
-                alert('To-Do erfolgreich hinzugefügt!');
                 setTitle('');
                 setDescription('');
                 let receivedTodo = response.data;
@@ -59,7 +57,6 @@ export function CreateTodo({ setTodos, todos }) {
             <label>
                 Beschreibung:
                 <textarea 
-                    placeholder="Beschreibung" 
                     value={description} 
                     onChange={(e) => setDescription(e.target.value)} // Eingabe wird in description gespeichert 
                     className="input-field"

@@ -5,8 +5,6 @@ export function ToDoList({ setEditingTodo, todos, setTodos }) {
         <div>
             {todos.length !== 0 &&
                 <div className="toDoList">
-                    <h1>To-Do List</h1>
-                    <p id="toDo">To Do</p>
                     <div className="card">
                         <ul>
                             {todos.map((todo) => (
