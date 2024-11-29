@@ -1,23 +1,30 @@
 import { useState } from 'react'
 
 import { ToDoList } from './components/Display_todos'
+import { EditTodo } from './components/EditTodo'
+import { CreateTodo } from './components/CreateTodo'
 import './App.css'
 
 
-const {mode,setmode} = useState("toDoList")
-const {ids,setIds} = useState([])
 
 function App() {
   const [count, setCount] = useState(0)
+  const {mode,setmode} = useState("toDoList")
+  const {ids,setIds} = useState([])
+
+  let content
+
 
   return (
-    <>
-      if (mode === "toDoList") {
+    <div>
+      {mode === "toDoList" ? (
         <ToDoList mode={mode} setmode={setmode} />
-      }
+      ) : (
+        <CreateTodo setmode={setmode} />
+      )}
+    </div>
 
 
-    </>
   )
 }
 

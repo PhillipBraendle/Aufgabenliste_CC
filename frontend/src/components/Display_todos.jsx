@@ -1,13 +1,12 @@
 import { useState } from 'react'
 
-import App from './App.jsx'
 import axios from 'axios'
-import './App.css'
 
 export function ToDoList({mode,setmode}) {
-    let todos = getTodos()
-    if (todos.length === 0) {
-        return <div>Fehler...</div>
+    const [todos, setTodos] = useState([])
+    getTodos(todos,setTodos)
+    if (todos === null) {
+        return <div>Noch keine To-dos</div>
     }
 
     return (
@@ -36,11 +35,11 @@ export function ToDoList({mode,setmode}) {
 }
 
 function getTodos() {
-    const [todos, setTodos] = useState([])
     axios.get('http://localhost:2000/todos')
         .then((response) => {
             setTodos(response.data)
             console.log(response)
+            return todos
         })
         .catch((error) => {
             console.log(error)
