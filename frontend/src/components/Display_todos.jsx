@@ -48,7 +48,7 @@ function getTodos() {
 }
 
 function deleteTodo(id) {
-    axios.delete('http://localhost:2000/todos')
+    axios.delete('http://localhost:2000/todos/:' + id)
         .then((response) => {
             console.log(response)
         })
