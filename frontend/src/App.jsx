@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import axios from 'axios'
+import axios from 'axios';
 
-import { ToDoList } from './components/TodoList'
-import { EditTodo } from './components/EditTodo'
-import { CreateTodo } from './components/CreateTodo'
-import { useEffect } from 'react'
-import './App.css'
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { ToDoList } from './components/TodoList';
+import { EditTodo } from './components/EditTodo';
+import { CreateTodo } from './components/CreateTodo';
+import './App.css';
 
 function getTodos(todos, setTodos) {
   axios.get('http://localhost:2000/todos')
@@ -28,19 +28,22 @@ function App() {
   return (
     <div>
     <h1>To-Do List</h1>
-        
-    <CreateTodo
-    setTodos={setTodos}
-    todos={todos} />
+    <hr ></hr>    
+    {!editingTodo && <CreateTodo
+      setTodos={setTodos}
+      todos={todos} />
+    }
+
     {editingTodo && 
       <EditTodo
         editingTodo={editingTodo}
         setEditingTodo={setEditingTodo}
         todos={todos}
-        setTodos={setTodos}
       />
     }
+    <hr></hr>
     <ToDoList 
+    editingTodo={editingTodo}
     setEditingTodo={setEditingTodo}
     todos={todos}
     setTodos={setTodos}/>

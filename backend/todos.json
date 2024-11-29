@@ -1,18 +1,18 @@
 {
   "todos": [
     {
-      "title": "Hallodwmkx",
-      "description": "Test",
+      "title": "Learn React",
+      "description": "Watch moodle Video",
       "id": 1
     },
     {
-      "title": "aasdfa",
-      "description": "asdfkaksdlafksdgöjadflsd",
+      "title": "Learn REST",
+      "description": "Watch moodle Video",
       "id": 2
     },
     {
-      "title": "cehwjcwjc",
-      "description": "mwecmsd,c",
+      "title": "Learn React",
+      "description": "Do React Tutorial",
       "id": 3
     }
   ]

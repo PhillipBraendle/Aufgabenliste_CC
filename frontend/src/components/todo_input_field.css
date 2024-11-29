@@ -1,45 +1,30 @@
 .todoForm {
   display: flex;
-  justify-content: center; /* Zentriert den Inhalt horizontal */
-  align-items: center;     /* Zentriert den Inhalt vertikal */
+  justify-content: center;  /* Zentriert den Inhalt horizontal */
+  align-items: center;  /* Zentriert den Inhalt vertikal */
   flex-direction: column;  /* Die Formularelemente untereinander anordnen */
   box-sizing: border-box;
+}
 
-  }
-  
-  .formGroup {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  .input-field {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .submit-btn, .cancel-btn {
-    padding: 15px 32px;
-    font-size: 18px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .submit-btn {
-    background-color: #4CAF50;
-    color: white;
-    margin: 10px;
-  }
-  
-  .cancel-btn {
-    background-color: #f44336;
-    color: white;
-    margin: 10px;
-  }
+.formGroup {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  box-sizing: border-box;
+}
+
+.input-field.error {
+  border: 2px solid #f44336;
+  outline: none;
+}

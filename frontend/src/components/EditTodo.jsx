@@ -1,15 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 
+import SaveOutlined from '@mui/icons-material/SaveOutlined';
+import CancleOutlined from '@mui/icons-material/CancelOutlined';
+
 import { useState } from 'react';
 import { useEffect } from 'react';
 
 import './todo_input_field.css';
 
 
-export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
+export function EditTodo({editingTodo, setEditingTodo, todos}) {
     const [title, setTitle] = useState(editingTodo.title);
     const [description, setDescription] = useState(editingTodo.description);
+    const [missingTitle, setMissingTitle] = useState(false);
 
     let id = editingTodo.id;
     useEffect(() => {
@@ -21,8 +25,10 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
         e.preventDefault();
 
         if (title.trim() === '') {
+            setMissingTitle(true);
             return;
         }
+        setMissingTitle(false);
         
         try {
             const response = await axios.put('http://localhost:2000/todos/' + id, 
@@ -57,16 +63,16 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
     };
 
     return(
-        <div className = "todoForm p-3">
+        <div className = "todoForm p-4">
             <div className = "formGroup">
                 <label>
                     Title:
                     <input 
                         type="text" 
-                        value={title} 
+                        value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
-                        className="input-field"
+                        className={`input-field ${missingTitle ? 'error' : ''}`}
                     />
                 </label>
             </div>
@@ -81,8 +87,14 @@ export function EditTodo({editingTodo, setEditingTodo, todos, setTodos}) {
                 </label>
             </div>
             <div>
-                <button type="submit" className='btn  btn-sm btn-primary me-2' onClick={handleSubmit}>Speichern</button>
-                <button type="button" className='btn btn-sm btn-danger' onClick={handleCancel}>Abbrechen</button>
+                <button type="submit" className='btn btn-primary me-2' onClick={handleSubmit}>
+                    <SaveOutlined />
+                    &ensp;Save
+                </button>
+                <button type="button" className='btn btn-danger me-2' onClick={handleCancel}>
+                    <CancleOutlined />
+                    &ensp;Cancel
+                    </button>
             </div>
         </div>
     )

@@ -1,13 +1,9 @@
-import axios from 'axios'
-
+import axios from 'axios';
 import React from 'react';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-export function ToDoList({ setEditingTodo, todos, setTodos }) {
-  const deleteTodo = (id, setTodos, todos) => {
-    // Hier die Logik zum Löschen eines ToDos hinzufügen
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
-  };
+export function ToDoList({ editingTodo, setEditingTodo, todos, setTodos }) {
 
   return (
     <div className="container mt-4">
@@ -15,7 +11,7 @@ export function ToDoList({ setEditingTodo, todos, setTodos }) {
         <div className="toDoList">
           <div className="card shadow-sm" style={{backgroundColor: '#D3D3D3'}}>
             <div className="card-body" style={{width: '500px'}}>
-              <h3 className="card-title ">Meine To-Do-Liste</h3>
+              <h3 className="card-title ">My To-Do List</h3>
               <ul className="list-group list-group-flush">
                 {todos.map((todo) => (
                   <li
@@ -30,16 +26,22 @@ export function ToDoList({ setEditingTodo, todos, setTodos }) {
                     <div className = "pt-3 pb-2">
                       <button
                         className="btn btn-sm btn-primary me-2"
-                        onClick={() => setEditingTodo(todo)}
-
+                        onClick={() => {
+                          if (editingTodo == null) {
+                            setEditingTodo(todo)
+                            window.scrollTo({ top: 0, behavior: "smooth" }); 
+                          }
+                        }}
                       >
-                        Bearbeiten
+                        <EditOutlinedIcon />
+                        &ensp;Edit
                       </button>
-                      <button
+                      <button 
                         className="btn btn-sm btn-danger"
                         onClick={() => deleteTodo(todo.id, setTodos, todos)}
                       >
-                        Löschen
+                        <DeleteOutlinedIcon />
+                        &ensp;Delete
                       </button>
                     </div>
                   </li>
@@ -64,5 +66,4 @@ function deleteTodo(id, setTodos, todos) {
         .catch((error) => {
             console.log(error)
         })
-    
 }
