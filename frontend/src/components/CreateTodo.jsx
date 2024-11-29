@@ -3,7 +3,7 @@ import { useState } from 'react';
 import axios from 'axios'; 
 import './todo_input_field.css';
 
-export function CreateTodo({setMode}) {
+export function CreateTodo({setmode}) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -18,8 +18,7 @@ export function CreateTodo({setMode}) {
         
         const newTodo = { 
             title, 
-            description,
-            state: 'todo',
+            description
         };
         
         try {
@@ -41,14 +40,14 @@ export function CreateTodo({setMode}) {
             alert('Es ist ein Fehler aufgetreten.');
         }
 
-        setMode('toDoList');
+        setmode('toDoList');
     };
 
     const handleCancel = () => {
         setTitle('');
         setDescription('');
         alert('Eingaben zurückgesetzt.');
-        setMode('toDoList');
+        setmode('toDoList');
     };
         
     return(

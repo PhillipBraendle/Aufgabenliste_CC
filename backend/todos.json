@@ -1,29 +1,15 @@
 {
   "todos": [
     {
-      "title": "myTodo1",
-      "description": "mytododescrition",
+      "title": "vxxcujcjx",
+      "description": "udjfudsj",
+      "state": "todo",
       "id": 1
     },
     {
-      "title": "myTodo2",
-      "description": "myOtherTodoDescrition",
+      "title": "avtfzu",
+      "description": "hgvkghäklmökjfighbkmnb",
       "id": 2
-    },
-    {
-      "title": "myTodo3",
-      "description": "ABC",
-      "id": 3
-    },
-    {
-      "title": "myTodo5",
-      "description": "XYZ",
-      "id": 5
-    },
-    {
-      "title": "myTodo4",
-      "description": "Hallo",
-      "id": 4
     }
   ]
 }

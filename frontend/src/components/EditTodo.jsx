@@ -3,9 +3,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import './todo_input_field.css';
 
-export function EditTodo({id}, {setMode}) {
-    let todos = getTodos();
+export function EditTodo({id, setmode}, todos) {
     let todo = todos.find(todo => todo.id === id);
+
 
     let todoTitle = todo.title;
     let todoDescription = todo.description;
@@ -43,7 +43,7 @@ export function EditTodo({id}, {setMode}) {
             alert('Es ist ein Fehler aufgetreten.');
         }
 
-        setMode('toDoList');
+        setmode('toDoList');
 
     };
 
@@ -51,7 +51,7 @@ export function EditTodo({id}, {setMode}) {
         setTitle(todoTitle);
         setDescription(todoDescription);       
         alert('Eingaben zurückgesetzt.');
-        setMode('toDoList');
+        setmode('toDoList');
     };
 
     return(
