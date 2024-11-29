@@ -51,7 +51,7 @@ app.post('/todos', express.json(), (req, res) => {
                 res.status(500).send('Internal Server Error');
                 return;
             }
-            res.status(201).send('Todo item added');
+            res.status(201).json(newTodo);
         });
     });
 });
@@ -73,7 +73,6 @@ app.put('/todos/:id', express.json(), (req, res) => {
 
         if (todoIndex === -1) {
             // create new todo item if its not found
-            console.log('Todo item to modify not found, creating a new one');
             todosObject.todos.push(updatedTodo);
         } else {
             // update the todo item
@@ -85,7 +84,8 @@ app.put('/todos/:id', express.json(), (req, res) => {
                 res.status(500).send('Internal Server Error');
                 return;
             }
-            res.status(200).send('Todo item updated');
+            ;
+        res.status(200).json(updatedTodo);
         });
     });
 });
