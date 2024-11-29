@@ -74,6 +74,50 @@ app.post('/todos/:id', express.json(), (req, res) => {
     });
 });
 
+app.put('/todos/:id', express.json(), (req, res) => {
+    const todosFilePath = path.join(__dirname, 'todos.json');
+    const updatedTodo = req.body;
+    const todoIdUrl = req.params.id;
+
+    // Check if ID in URL matches ID in request body
+    if (updatedTodo.id !== todoIdUrl) {
+        res.status(400).send('ID in URL does not match ID in todo item');
+        return;
+    }
+
+    // Check if todo item is structured correctly
+    const expectedProperties = ['id', 'title', 'description', 'state'];
+    if (!hasExactProperties(updatedTodo, expectedProperties)) {
+        res.status(400).send('Todo item structure is invalid');
+        return;
+    }
+
+    fs.readFile(todosFilePath, 'utf8', (err, data) => {
+        if (err) {
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        const todosObject = JSON.parse(data);
+        const todoIndex = todosObject.todos.findIndex(todo => todo.id === updatedTodo.id);
+
+        if (todoIndex === -1) {
+            res.status(404).send('Todo item not found');
+            return;
+        }
+
+        todosObject.todos[todoIndex] = updatedTodo;
+
+        fs.writeFile(todosFilePath, JSON.stringify(todosObject, null, 2), 'utf8', (err) => {
+            if (err) {
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.status(200).send('Todo item updated');
+        });
+    });
+});
+
 server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
