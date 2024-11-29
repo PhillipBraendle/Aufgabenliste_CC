@@ -27,17 +27,10 @@ function hasExactProperties(obj, properties) {
     );
 }
 
-app.post('/todos/:id', express.json(), (req, res) => {
+app.post('/todos', express.json(), (req, res) => {
     const todosFilePath = path.join(__dirname, 'todos.json');
     const newTodo = req.body;
-    const todoIdUrl = req.params.id;
     
-    // Check if ID in URL matches ID in request body
-    if (newTodo.id !== todoIdUrl) {
-        res.status(400).send('ID in URL does not match ID in todo item');
-        return;
-    }
-
     // Check if todo item is structured correctly
     const expectedProperties = ['id', 'title', 'description', 'state'];
     if (!hasExactProperties(newTodo, expectedProperties)) {
