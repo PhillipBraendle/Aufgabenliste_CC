@@ -111,6 +111,36 @@ app.put('/todos/:id', express.json(), (req, res) => {
     });
 });
 
+app.delete('/todos/:id', (req, res) => {
+    const todosFilePath = path.join(__dirname, 'todos.json');
+    const todoId = req.params.id;
+
+    fs.readFile(todosFilePath, 'utf8', (err, data) => {
+        if (err) {
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        const todosObject = JSON.parse(data);
+        const todoIndex = todosObject.todos.findIndex(todo => todo.id === todoId);
+
+        if (todoIndex === -1) {
+            res.status(404).send('Todo item not found');
+            return;
+        }
+
+        todosObject.todos.splice(todoIndex, 1);
+
+        fs.writeFile(todosFilePath, JSON.stringify(todosObject, null, 2), 'utf8', (err) => {
+            if (err) {
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.status(200).send('Todo item deleted');
+        });
+    });
+});
+
 server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
