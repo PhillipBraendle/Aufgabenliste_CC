@@ -12,10 +12,15 @@ function App() {
   const [mode,setmode] = useState("toDoList")
 
   console.log(mode);
-  let content 
+  let content
+  if (mode === "toDoList") {
+    content = <ToDoList setmode={setmode}/>
+  } else if (mode === "edit") {
+    content = <EditTodo setmode={setmode}/>
+  }
   return (
     <div>
-
+     {content} 
     </div>
 
 
