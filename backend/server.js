@@ -7,6 +7,15 @@ const fs = require('fs');
 const path = require('path');
 const expectedProperties = ['id', 'title', 'description'];
 
+function getNewId(todosObject){
+    const existingIds = todosObject.todos.map(todo => todo.id);
+    let newId = 1;
+    while (existingIds.includes(newId)) {
+        newId++;
+    }
+    return newId;
+}
+
 app.get('/todos', (req, res) => {
     const todosPath = path.join(__dirname, 'todos.json');
 
@@ -33,12 +42,7 @@ app.post('/todos', express.json(), (req, res) => {
         const todosObject = JSON.parse(data);
         
         // assign the id to the new todo item
-        const existingIds = todosObject.todos.map(todo => todo.id);
-        let newId = 1;
-        while (existingIds.includes(newId)) {
-            newId++;
-        }
-        newTodo.id = newId;
+        newTodo.id = getNewId(todosObject);
 
         // add new todo item to the todosfile
         todosObject.todos.push(newTodo);
@@ -55,7 +59,7 @@ app.post('/todos', express.json(), (req, res) => {
 app.put('/todos/:id', express.json(), (req, res) => {
     const todosFilePath = path.join(__dirname, 'todos.json');
     const updatedTodo = req.body;
-    const todoId = req.params.id;
+    const todoId = parseInt(req.params.id, 10);
 
     fs.readFile(todosFilePath, 'utf8', (err, data) => {
         if (err) {
@@ -63,18 +67,18 @@ app.put('/todos/:id', express.json(), (req, res) => {
             return;
         }
 
+        updatedTodo.id = todoId;
         const todosObject = JSON.parse(data);
-        const todoIndex = todosObject.todos.findIndex(todo => todo.id == todoId);
-        console.log('todosObject:', todosObject);
-        console.log('todoId:', todoId);
+        const todoIndex = todosObject.todos.findIndex(todo => todo.id === todoId);
 
         if (todoIndex === -1) {
-            res.status(404).send('Todo item not found');
-            return;
+            // create new todo item if its not found
+            console.log('Todo item to modify not found, creating a new one');
+            todosObject.todos.push(updatedTodo);
+        } else {
+            // update the todo item
+            todosObject.todos[todoIndex] = updatedTodo;
         }
-
-        // update the todo item
-        todosObject.todos[todoIndex] = updatedTodo;
 
         fs.writeFile(todosFilePath, JSON.stringify(todosObject, null, 2), 'utf8', (err) => {
             if (err) {
@@ -88,7 +92,7 @@ app.put('/todos/:id', express.json(), (req, res) => {
 
 app.delete('/todos/:id', (req, res) => {
     const todosFilePath = path.join(__dirname, 'todos.json');
-    const todoId = req.params.id;
+    const todoId = parseInt(req.params.id, 10);
 
     // read the todos file
     fs.readFile(todosFilePath, 'utf8', (err, data) => {
@@ -101,6 +105,7 @@ app.delete('/todos/:id', (req, res) => {
         const todoIndex = todosObject.todos.findIndex(todo => todo.id === todoId);
 
         if (todoIndex === -1) {
+            // this violates idempotency, but it makes more sense for this application
             res.status(404).send('Todo item not found');
             return;
         }
